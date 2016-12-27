@@ -82,7 +82,7 @@ app.post('/register', function(req, res) {
 	console.log('POST Request');
 	console.log('Registration POST Status:', res.statusCode);
 	console.log('Registration POST Body:\n', req.body)
-	var user  = JSON.parse(req.body);
+	var user  = req.body;
 	var query = connection.query('INSERT INTO users SET ?', user, function(err,res){
 		if(err) 
 			throw err;
