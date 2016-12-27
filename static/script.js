@@ -103,7 +103,7 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 });
 
 projetApp.controller('dashboardController', function($scope, sharedProperties) {
-
-	$scope.message = sharedProperties.getUser().email;
+	$scope.user = sharedProperties.getUser();
+	$scope.message = 'Welcome to the dashboard';
 	
 });
