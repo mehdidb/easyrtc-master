@@ -50,8 +50,8 @@ projetApp.controller('signupController', function($scope, $http) {
 		}
 		
 		user.password = CryptoJS.SHA256(user.password).toString();
-		user.cPassword = CryptoJS.SHA256(user.cPassword).toString();
-
+		delete user.cPassword;
+		console.log(JSON.stringify(user));
 		$http.post("/register", JSON.stringify(user), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
             console.log(data + ' ' + status);
