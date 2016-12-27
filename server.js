@@ -31,6 +31,7 @@ connection.query(query, function(err,rows){
 		throw err;
 	
 	console.log("Creation successful ...");
+	console.log(rows);
   }
 );
 // Set process name
