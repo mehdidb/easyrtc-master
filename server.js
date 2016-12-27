@@ -28,14 +28,11 @@ var query =
 "CREATE TABLE `user` (\
   `id` int(11) NOT NULL AUTO_INCREMENT,\
   `email` char(60) DEFAULT NOT NULL,\
-  `password` char(60) DEFAULT NOT NULL,\
-  `addresse` char(60) DEFAULT NOT NULL,\
-  `cin` char(60) DEFAULT NOT NULL,\
-  `matricule` char(60) DEFAULT NOT NULL,\
   PRIMARY KEY (`id`)\
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1"
 connection.query(query, function(err,rows){
-    if(err) 
+    console.log(query);
+	if(err) 
 		throw err;
 	
 	console.log("Creation successful ...");
