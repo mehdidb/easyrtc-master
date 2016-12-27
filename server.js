@@ -5,6 +5,8 @@ var serveStatic = require('serve-static');  // serve static files
 var socketIo = require("socket.io");        // web socket external module
 var easyrtc = require("./");               // EasyRTC external module
 var bodyParser = require('body-parser');
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 // Set process name
 process.title = "node-easyrtc";
 
@@ -14,7 +16,7 @@ app.use(serveStatic('static', {'index': ['index.html']}));
 app.use(bodyParser.json());
 
 // Start Express http server on port 8080
-var webServer = http.createServer(app).listen(8080);
+var webServer = http.createServer(app).listen(server_port);
 
 // Start Socket.io so it attaches itself to Express server
 var socketServer = socketIo.listen(webServer, {"log level":1});
@@ -55,7 +57,7 @@ var rtc = easyrtc.listen(app, socketServer, null, function(err, rtcRef) {
 });
 
 //listen on port 8080
-webServer.listen(8080, function () {
+webServer.listen(server_port, server_ip_address, function () {
     console.log('listening on http://localhost:8080');
 });
 
