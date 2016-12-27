@@ -18,53 +18,51 @@
 				<div id="ongForm" ng-show="user.type == 1">
 					<form novalidate="">
 						<label>Email:</label><br>
-						<input class="form-control" type="email" ng-model="user.email" required=""><br>
+						<input class="form-control" type="email" ng-model="user.email" placeholder="Email"><br>
 						<label>Password:</label><br>
-						<input class="form-control" type="password" ng-model="user.password" required=""><br>
+						<input class="form-control" type="password" ng-model="user.password" placeholder="Password"><br>
 						<label>Confirm password:</label><br>
-						<input class="form-control" type="password" ng-model="user.cPassword" required=""><br>
+						<input class="form-control" type="password" ng-model="user.cPassword" placeholder="Confirm password"><br>
 						<label>Address:</label><br>
-						<input class="form-control" type="text" ng-model="user.address" required=""><br>
+						<input class="form-control" type="text" ng-model="user.address" placeholder="Address"><br>
 						<label>C.I.N:</label><br>
-						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
+						<input class="form-control" type="text" ng-model="user.cin" placeholder="C.I.N"><br>
 						<button type="submit" ng-click="registerUser(user)" class="btn btn-default">Register</button>
 						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
 					</form>
-					<pre>user = {{user | json}}</pre>
 				</div>
 				
 				<div id="dentistForm" ng-show="user.type == 2">
 					<form novalidate="">
 						<label>Email:</label><br>
-						<input class="form-control" type="email" ng-model="user.email" required=""><br>
+						<input class="form-control" type="email" ng-model="user.email" placeholder="Email"><br>
 						<label>Password:</label><br>
-						<input class="form-control" type="password" ng-model="user.password" required=""><br>
+						<input class="form-control" type="password" ng-model="user.password" placeholder="Password"><br>
 						<label>Confirm password:</label><br>
-						<input class="form-control" type="password" ng-model="user.cPassword" required=""><br>
+						<input class="form-control" type="password" ng-model="user.cPassword" placeholder="Confirm password"><br>
 						<label>Address:</label><br>
-						<input class="form-control" type="text" ng-model="user.address" required=""><br>
+						<input class="form-control" type="text" ng-model="user.address" placeholder="Address"><br>
 						<label>C.I.N:</label><br>
-						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
+						<input class="form-control" type="text" ng-model="user.cin" placeholder="C.I.N"><br>
 						<label>Matricule:</label><br>
-						<input class="form-control" type="text" ng-model="user.matricule" required=""><br>
+						<input class="form-control" type="text" ng-model="user.matricule" placeholder="Matricule"><br>
 						<button type="submit" ng-click="registerUser(user)" class="btn btn-default">Register</button>
 						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
 					</form>
-					<pre>user = {{user | json}}</pre>
 				</div>
 				
 				<div id="operatorForm" ng-show="user.type == 3">
 					<form novalidate="">
 						<label>Email:</label><br>
-						<input class="form-control" type="email" ng-model="user.email" required=""><br>
+						<input class="form-control" type="email" ng-model="user.email" placeholder="Email"><br>
 						<label>Password:</label><br>
-						<input class="form-control" type="password" ng-model="user.password" required=""><br>
+						<input class="form-control" type="password" ng-model="user.password" placeholder="Password"><br>
 						<label>Confirm password:</label><br>
-						<input class="form-control" type="password" ng-model="user.cPassword" required=""><br>
+						<input class="form-control" type="password" ng-model="user.cPassword" placeholder="Confirm password"><br>
 						<label>Address:</label><br>
-						<input class="form-control" type="text" ng-model="user.address" required=""><br>
+						<input class="form-control" type="text" ng-model="user.address" placeholder="Address"><br>
 						<label>C.I.N:</label><br>
-						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
+						<input class="form-control" type="text" ng-model="user.cin" placeholder="C.I.N"><br>
 						<button type="submit" ng-click="registerUser(user)" class="btn btn-default">Register</button>
 						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
 					</form>

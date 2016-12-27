@@ -1,4 +1,23 @@
-var projetApp = angular.module('projetApp', ['ngRoute']);
+var projetApp = angular.module('projetApp', ['ngRoute']).service('sharedProperties', function (){
+    var user;
+
+    return {
+        getUser: function () {
+            return user;
+        },
+        setUser: function(value) {
+            user = value;
+        }
+    };
+});
+
+projetApp.factory('SharedService', function() {
+  return {
+    sharedObject: {
+		user: ''
+    }
+  };
+});
 
 projetApp.config(function($routeProvider) {
 	$routeProvider
@@ -18,13 +37,12 @@ projetApp.config(function($routeProvider) {
 		})
 });
 
-projetApp.controller('mainController', function($scope, $http, $location) {
+projetApp.controller('mainController', function($scope, $http, $location, sharedProperties) {
 	$scope.message = 'Please log in in order to use our application';
 	$scope.status = '';
 	$scope.color = 'white';
 	
 	$scope.loginUser = function(user) {
-		console.log(JSON.stringify(user));
 		user.password = CryptoJS.SHA256(user.password).toString();
 		$http.post("/login", JSON.stringify(user), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
@@ -32,6 +50,7 @@ projetApp.controller('mainController', function($scope, $http, $location) {
 			$scope.color = data.color;
 			if (data.status == 1) {
 				$location.path("/dashboard");
+				sharedProperties.setUser(user);
 			}
         }).
 		error(function(data, status) {
@@ -41,7 +60,7 @@ projetApp.controller('mainController', function($scope, $http, $location) {
 	}
 });
 
-projetApp.controller('signupController', function($scope, $http, $location) {
+projetApp.controller('signupController', function($scope, $http, $location, sharedProperties) {
 	$scope.user = {"type":0};
 	$scope.changeType = function(type) {
 		$scope.user.type = type;
@@ -83,11 +102,8 @@ projetApp.controller('signupController', function($scope, $http, $location) {
 	}
 });
 
-projetApp.controller('dashboardController', function($scope) {
-	$scope.user = {"type":0};
-	$scope.message = 'Everyone come and see how good I look!';
+projetApp.controller('dashboardController', function($scope, sharedProperties) {
+
+	$scope.message = sharedProperties.getUser().email;
 	
-	$scope.changeType = function(type) {
-		$scope.user.type = type;
-	}
 });
