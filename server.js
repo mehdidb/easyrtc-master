@@ -5,8 +5,15 @@ var serveStatic = require('serve-static');  // serve static files
 var socketIo = require("socket.io");        // web socket external module
 var easyrtc = require("./");               // EasyRTC external module
 var bodyParser = require('body-parser');
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'mysql://mysql:3306/',
+  user     : 'user2NQ',
+  password : 'j5mRRh4FnrlTkxhi',
+  database : 'sampledb'
+});
 // Set process name
 process.title = "node-easyrtc";
 
@@ -14,6 +21,14 @@ process.title = "node-easyrtc";
 var app = express();
 app.use(serveStatic('static', {'index': ['index.html']}));
 app.use(bodyParser.json());
+
+connection.connect(function(err){
+if(!err) {
+    console.log("Database is connected ... nn");    
+} else {
+    console.log("Error connecting database ... nn");    
+}
+});
 
 // Start Express http server on port 8080
 var webServer = http.createServer(app).listen(server_port);
