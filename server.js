@@ -24,7 +24,16 @@ connection.connect(function(err){
 	}
 });
 
-var query = "CREATE TABLE `test`.`user` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR NOT NULL , `password` VARCHAR NOT NULL , `matricule` VARCHAR NOT NULL , `address` VARCHAR NOT NULL , `cin` VARCHAR NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"
+var query = 
+"CREATE TABLE `user` (\
+  `id` int(11) NOT NULL AUTO_INCREMENT,\
+  `email` char(60) DEFAULT NOT NULL,\
+  `password` char(60) DEFAULT NOT NULL,\
+  `addresse` char(60) DEFAULT NOT NULL,\
+  `cin` char(60) DEFAULT NOT NULL,\
+  `matricule` char(60) DEFAULT NOT NULL,\
+  PRIMARY KEY (`id`)\
+) ENGINE=InnoDB DEFAULT CHARSET=latin1"
 connection.query(query, function(err,rows){
     if(err) 
 		throw err;
