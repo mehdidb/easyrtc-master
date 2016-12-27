@@ -35,7 +35,7 @@
   "dependencies": {
     "async": "0.2.x",
     "colors": "*",
-    "underscore": "1.5.x"
+    "underscore": "1.5.x",
 	"express": "^4.10.7",
     "serve-static": "^1.8.0",
     "socket.io": "^1.4.5"
