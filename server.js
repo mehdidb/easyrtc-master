@@ -24,16 +24,7 @@ connection.connect(function(err){
 	}
 });
 
-var query = 
-"USE sampledb;\
-CREATE TABLE users (\
-  id int(11) NOT NULL AUTO_INCREMENT,\
-  firstname varchar(30),\
-  lastname varchar(30),\
-  email VARCHAR(50),\
-  creation_date TIMESTAMP,\
-  PRIMARY KEY (id)\
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+var query = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE engine = 'InnoDB'";
 connection.query(query, function(err,rows){
     console.log(query);
 	if(err) 
