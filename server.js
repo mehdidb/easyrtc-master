@@ -24,26 +24,6 @@ connection.connect(function(err){
 	}
 });
 
-var query = 
-"DROP TABLE IF EXISTS `user`;\
-CREATE TABLE `user` (\
-  `id` int(11) NOT NULL,\
-  `email` varchar(255) NOT NULL,\
-  `password` varchar(255) NOT NULL,\
-  `address` varchar(255) NOT NULL,\
-  `cin` varchar(255) NOT NULL,\
-  `matricule` varchar(255) NOT NULL,\
-  PRIMARY KEY (`id`)\
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;\
-SET FOREIGN_KEY_CHECKS=1;";
-connection.query(query, function(err,rows){
-    console.log(query);
-	if(err) 
-		throw err;
-	
-	console.log("Creation successful ...");
-  }
-);
 // Set process name
 process.title = "node-easyrtc";
 
@@ -103,10 +83,11 @@ app.post('/register', function(req, res) {
 	console.log('Registration POST Status:', res.statusCode);
 	console.log('Registration POST Body:\n', req.body)
 	var user  = JSON.parse(req.body);
-	connection.query('INSERT INTO user SET ?', user, function(err,res){
+	var query = connection.query('INSERT INTO users SET ?', user, function(err,res){
 		if(err) 
 			throw err;
 		console.log('Last insert ID:', res.insertId);
 	});
+	console.log(query.sql);
 	res.end('User added successfully with ID=' + res.insertId);
 });
