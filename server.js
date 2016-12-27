@@ -88,12 +88,13 @@ app.post('/register', function(req, res) {
 	user.available = 1;
 	user.active = 0;
 	var query = connection.query('SELECT count(*) FROM users WHERE email=' + user.email, function(err,res){
-		if(err) 
-			throw err;
 		mailInUse = res;
 		console.log('Email in use:', res);
+		if(err) 
+			throw err;
+		
 	});
-	
+	/*
 	if (!mailInUse) {
 		query = connection.query('INSERT INTO users SET ?', user, function(err,res){
 			if(err) 
@@ -105,4 +106,6 @@ app.post('/register', function(req, res) {
 	} else {
 		res.end('{\'message\':\'Error : Mail used.\'');
 	}
+	*/
+	res.end('{\'message\':\'Error : Mail used.\'');
 });
