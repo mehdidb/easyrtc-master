@@ -92,6 +92,7 @@ app.post('/register', function(req, res) {
 		mailInUse = res;
 		console.log('Email in use:', res);
 	});
+	
 	if (!mailInUse) {
 		query = connection.query('INSERT INTO users SET ?', user, function(err,res){
 			if(err) 
