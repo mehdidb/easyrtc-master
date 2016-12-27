@@ -1,0 +1,78 @@
+<div id="page-wrapper">	
+	<div class="container-fluid">
+		<!-- Page Heading -->
+		<!-- Page Heading -->
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">
+					Registration
+					<small>Please select your status</small>
+				</h1>
+				<form class="form-group">
+					<input type="radio" name="userType" class="btn btn-default" ng-click="changeType(1)">ONG Agent<br>
+					<input type="radio" name="userType" class="btn btn-default" ng-click="changeType(2)">Dentist<br>
+					<input type="radio" name="userType" class="btn btn-default" ng-click="changeType(3)">Operator<br>
+					<button type="submit" onclick="window.location.href='#/'" class="btn btn-default" ng-show="user.type == 0">Return</button>
+				</form>
+
+				<div id="ongForm" ng-show="user.type == 1">
+					<form novalidate="">
+						<label>Email:</label><br>
+						<input class="form-control" type="email" ng-model="user.email" required=""><br>
+						<label>Password:</label><br>
+						<input class="form-control" type="password" ng-model="user.password" required=""><br>
+						<label>Confirm password:</label><br>
+						<input class="form-control" type="password" ng-model="user.cPassword" required=""><br>
+						<label>Address:</label><br>
+						<input class="form-control" type="text" ng-model="user.address" required=""><br>
+						<label>C.I.N:</label><br>
+						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
+						<button type="submit" class="btn btn-default">Register</button>
+						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
+					</form>
+					<pre>user = {{user | json}}</pre>
+				</div>
+				
+				<div id="dentistForm" ng-show="user.type == 2">
+					<form novalidate="">
+						<label>Email:</label><br>
+						<input class="form-control" type="email" ng-model="user.email" required=""><br>
+						<label>Password:</label><br>
+						<input class="form-control" type="password" ng-model="user.password" required=""><br>
+						<label>Confirm password:</label><br>
+						<input class="form-control" type="password" ng-model="user.cPassword" required=""><br>
+						<label>Address:</label><br>
+						<input class="form-control" type="text" ng-model="user.address" required=""><br>
+						<label>C.I.N:</label><br>
+						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
+						<label>Matricule:</label><br>
+						<input class="form-control" type="text" ng-model="user.matricule" required=""><br>
+						<button type="submit" ng-click="registerUser(user)" class="btn btn-default">Register</button>
+						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
+					</form>
+					<pre>user = {{user | json}}</pre>
+				</div>
+				
+				<div id="operatorForm" ng-show="user.type == 3">
+					<form novalidate="">
+						<label>Email:</label><br>
+						<input class="form-control" type="email" ng-model="user.email" required=""><br>
+						<label>Password:</label><br>
+						<input class="form-control" type="password" ng-model="user.password" required=""><br>
+						<label>Confirm password:</label><br>
+						<input class="form-control" type="password" ng-model="user.cPassword" required=""><br>
+						<label>Address:</label><br>
+						<input class="form-control" type="text" ng-model="user.address" required=""><br>
+						<label>C.I.N:</label><br>
+						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
+						<button type="submit" class="btn btn-default">Register</button>
+						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
+					</form>
+					<pre>user = {{user | json}}</pre>
+				</div>
+			</div>
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</div>
