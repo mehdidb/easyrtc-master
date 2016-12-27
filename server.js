@@ -8,11 +8,19 @@ var bodyParser = require('body-parser');
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var mysql      = require('mysql');
+
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'user2NQ',
   password : 'j5mRRh4FnrlTkxhi',
   database : 'sampledb'
+});
+connection.connect(function(err){
+	if(!err) {
+		console.log("Database is connected ...");    
+	} else {
+		console.log("Error connecting database ...");    
+	}
 });
 // Set process name
 process.title = "node-easyrtc";
@@ -21,14 +29,6 @@ process.title = "node-easyrtc";
 var app = express();
 app.use(serveStatic('static', {'index': ['index.html']}));
 app.use(bodyParser.json());
-
-connection.connect(function(err){
-if(!err) {
-    console.log("Database is connected ... nn");    
-} else {
-    console.log("Error connecting database ... nn");    
-}
-});
 
 // Start Express http server on port 8080
 var webServer = http.createServer(app).listen(server_port);
