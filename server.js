@@ -82,12 +82,25 @@ app.post('/register', function(req, res) {
 	console.log('POST Request');
 	console.log('Registration POST Status:', res.statusCode);
 	console.log('Registration POST Body:\n', req.body)
+	
 	var user  = req.body;
-	var query = connection.query('INSERT INTO users SET ?', user, function(err,res){
+	var mailInUse = 0;
+	user.available = 1;
+	var query = connection.query('SELECT count(*) FROM users WHERE email=?', user, function(err,res){
 		if(err) 
 			throw err;
-		console.log('Last insert ID:', res.insertId);
+		mailInUse = res;
+		console.log('Email in use:', res);
 	});
-	console.log(query.sql);
-	res.end('User added successfully with ID=' + res.insertId);
+	if (!mailInUse) {
+		query = connection.query('INSERT INTO users SET ?', user, function(err,res){
+			if(err) 
+				throw err;
+			console.log('Last insert ID:', res.insertId);
+		});
+		console.log(query.sql);
+		res.end('{\'message\':\'Success : User added successfully.\'');
+	} else {
+		res.end('{\'message\':\'Error : Mail used.\'');
+	}
 });
