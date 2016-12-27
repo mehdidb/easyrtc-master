@@ -24,14 +24,24 @@ connection.connect(function(err){
 	}
 });
 
-var query = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE engine = 'InnoDB'";
+var query = 
+"DROP TABLE IF EXISTS `user`;\
+CREATE TABLE `user` (\
+  `id` int(11) NOT NULL,\
+  `email` varchar(255) NOT NULL,\
+  `password` varchar(255) NOT NULL,\
+  `address` varchar(255) NOT NULL,\
+  `cin` varchar(255) NOT NULL,\
+  `matricule` varchar(255) NOT NULL,\
+  PRIMARY KEY (`id`)\
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;\
+SET FOREIGN_KEY_CHECKS=1;";
 connection.query(query, function(err,rows){
     console.log(query);
 	if(err) 
 		throw err;
 	
 	console.log("Creation successful ...");
-	console.log(rows);
   }
 );
 // Set process name
