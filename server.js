@@ -87,13 +87,14 @@ app.post('/register', function(req, res) {
 	var mailInUse = 0;
 	user.available = 1;
 	user.active = 0;
-	var query = connection.query('SELECT count(*) FROM users WHERE email=' + user.email, function(err,res){
-		mailInUse = res;
-		console.log('Email in use:', res);
+	var query = connection.query('SELECT COUNT(*) AS namesCount FROM users WHERE email=' + user.email, function(err,res){
+		mailInUse = res[0].namesCount;
+		console.log('Email in use:', mailInUse);
 		if(err) 
 			throw err;
 		
 	});
+	console.log(query.sql);
 	/*
 	if (!mailInUse) {
 		query = connection.query('INSERT INTO users SET ?', user, function(err,res){
