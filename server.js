@@ -10,7 +10,8 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var mysql      = require('mysql');
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
+  host     : '10.1.18.29',
+  port     : '3306',
   user     : 'user2NQ',
   password : 'j5mRRh4FnrlTkxhi',
   database : 'sampledb'
