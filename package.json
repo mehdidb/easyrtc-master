@@ -23,7 +23,7 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/priologic/easyrtc.git"
+    "url": "https://github.com/mehdidb/easyrtc-master.git"
   },
   "bugs": {
     "url": "https://github.com/priologic/easyrtc/issues"
