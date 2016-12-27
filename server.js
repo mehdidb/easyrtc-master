@@ -25,10 +25,15 @@ connection.connect(function(err){
 });
 
 var query = 
-"CREATE TABLE `sampledb`.`user` (\
-  `id` int(11) NOT NULL AUTO_INCREMENT,\
-  `email` char(60) DEFAULT NOT NULL,\
-  PRIMARY KEY (`id`))"
+"USE sampledb;\
+CREATE TABLE users (\
+  id int(11) NOT NULL AUTO_INCREMENT,\
+  firstname varchar(30),\
+  lastname varchar(30),\
+  email VARCHAR(50),\
+  creation_date TIMESTAMP,\
+  PRIMARY KEY (id)\
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
 connection.query(query, function(err,rows){
     console.log(query);
 	if(err) 
