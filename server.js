@@ -10,7 +10,8 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var mysql      = require('mysql');
 
 var connection = mysql.createConnection({
-  host     : '10.1.18.29',
+  //host     : '10.1.18.29',
+  host     : 'localhost',
   port     : '3306',
   user     : 'user2NQ',
   password : 'j5mRRh4FnrlTkxhi',
@@ -79,34 +80,90 @@ webServer.listen(server_port, server_ip_address, function () {
 });
 
 app.post('/register', function(req, res) {
-	console.log('POST Request');
-	console.log('Registration POST Status:', res.statusCode);
-	console.log('Registration POST Body:\n', req.body)
-	
 	var user  = req.body;
-	var mailInUse = 0;
 	user.available = 1;
 	user.active = 0;
-	var query = connection.query('SELECT COUNT(*) AS namesCount FROM users WHERE email=' + user.email, function(err,res){
-		mailInUse = res[0].namesCount;
-		console.log('Email in use:', mailInUse);
-		if(err) 
-			throw err;
-		
-	});
-	console.log(query.sql);
-	/*
-	if (!mailInUse) {
-		query = connection.query('INSERT INTO users SET ?', user, function(err,res){
-			if(err) 
-				throw err;
-			console.log('Last insert ID:', res.insertId);
-		});
-		console.log(query.sql);
-		res.end('{\'message\':\'Success : User added successfully.\'');
-	} else {
-		res.end('{\'message\':\'Error : Mail used.\'');
+	if (user.type != 2) {
+		user.matricule = 0;
 	}
-	*/
-	res.end('{\'message\':\'Error : Mail used.\'');
+	/* ============== */
+	var mailTest = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var cinTest = /^\d{8}?$/
+	if (!mailTest.test(user.email)) {
+		var resp = new Object();
+		resp.status = 0;
+		resp.message = 'Incorrect mail.';
+		console.log(JSON.stringify(resp));
+		res.end(JSON.stringify(resp));
+		return;
+	}
+	
+	if (!cinTest.test(user.cin)) {
+		var resp = new Object();
+		resp.status = 0;
+		resp.message = 'Incorrect CIN.';
+		console.log(JSON.stringify(resp));
+		res.end(JSON.stringify(resp));
+		return;
+	}
+	
+	var mailNotInUse = 0;
+	
+	
+	var query = connection.query('SELECT COUNT(*) AS namesCount FROM users WHERE email=?', user.email, function(err, rows){
+		if (err) {  
+			console.log(err.message);
+		} else {
+			var resp = new Object();
+			mailNotInUse = rows[0].namesCount == 0; 
+			if (mailNotInUse == true) {
+				query = connection.query('INSERT INTO users SET ?', user, function(err,res){
+					if(err) 
+						throw err;
+				});
+					
+				resp.status = 1;
+				resp.message = 'User added successfully.';
+			} else {
+				var resp = new Object();
+				resp.status = 0;
+				resp.message = 'Mail used.';
+			}
+			console.log(JSON.stringify(resp));
+			res.end(JSON.stringify(resp));
+		} 
+	});
 });
+
+app.post('/login', function(req, res) {
+	var user  = req.body;
+	var query = connection.query('SELECT active, COUNT(*) AS Colsum FROM users WHERE email=? and password=?', [user.email, user.password], function(err, rows){
+		if (err) {  
+			console.log(err.message);
+		} else {
+			console.log(rows);
+			var resp = new Object();
+			var found = rows[0].Colsum != 0;
+
+			if (found == true) {
+				if (rows[0].active == 0) {
+					var resp = new Object();
+					resp.status = 0;
+					resp.color = 'red';
+					resp.message = 'Your account is not active.';
+				} else {
+					resp.status = 1;
+					resp.color = 'green';
+					resp.message = 'Welcome.';
+				}
+			} else {
+				var resp = new Object();
+				resp.status = 0;
+				resp.color = 'red';
+				resp.message = 'Incorrect creditential.';
+			}
+			res.end(JSON.stringify(resp));
+		} 
+	});
+});
+

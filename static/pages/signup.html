@@ -27,7 +27,7 @@
 						<input class="form-control" type="text" ng-model="user.address" required=""><br>
 						<label>C.I.N:</label><br>
 						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
-						<button type="submit" class="btn btn-default">Register</button>
+						<button type="submit" ng-click="registerUser(user)" class="btn btn-default">Register</button>
 						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
 					</form>
 					<pre>user = {{user | json}}</pre>
@@ -65,10 +65,9 @@
 						<input class="form-control" type="text" ng-model="user.address" required=""><br>
 						<label>C.I.N:</label><br>
 						<input class="form-control" type="text" ng-model="user.cin" required=""><br>
-						<button type="submit" class="btn btn-default">Register</button>
+						<button type="submit" ng-click="registerUser(user)" class="btn btn-default">Register</button>
 						<button type="submit" onclick="window.location.href='#/'" class="btn btn-default">Return</button>
 					</form>
-					<pre>user = {{user | json}}</pre>
 				</div>
 			</div>
 		</div>

@@ -18,11 +18,30 @@ projetApp.config(function($routeProvider) {
 		})
 });
 
-projetApp.controller('mainController', function($scope) {
+projetApp.controller('mainController', function($scope, $http, $location) {
 	$scope.message = 'Please log in in order to use our application';
+	$scope.status = '';
+	$scope.color = 'white';
+	
+	$scope.loginUser = function(user) {
+		console.log(JSON.stringify(user));
+		user.password = CryptoJS.SHA256(user.password).toString();
+		$http.post("/login", JSON.stringify(user), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {
+            $scope.status = data.message;
+			$scope.color = data.color;
+			if (data.status == 1) {
+				$location.path("/dashboard");
+			}
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+		delete user.password;
+	}
 });
 
-projetApp.controller('signupController', function($scope, $http) {
+projetApp.controller('signupController', function($scope, $http, $location) {
 	$scope.user = {"type":0};
 	$scope.changeType = function(type) {
 		$scope.user.type = type;
@@ -54,11 +73,13 @@ projetApp.controller('signupController', function($scope, $http) {
 		console.log(JSON.stringify(user));
 		$http.post("/register", JSON.stringify(user), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
-            console.log(data + ' ' + status);
+            console.log('User added successfully.');
+			$location.path("/");
         }).
 		error(function(data, status) {
             console.log('unknown error');
         });
+		delete user.password;
 	}
 });
 
