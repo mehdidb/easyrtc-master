@@ -24,19 +24,7 @@ connection.connect(function(err){
 	}
 });
 
-var query = 
-"DROP TABLE IF EXISTS user;\
-CREATE TABLE user \
-(\
-  id INT(10) UNSIGNED NOT NULL,\
-  email CHAR(50) NOT NULL,\
-  password CHAR(100) NOT NULL,\
-  address CHAR(100) NOT NULL,\
-  cin CHAR(8) NOT NULL,\
-  matricule CHAR(50) NOT NULL,\
-  PRIMARY KEY (id)\
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;\
-  Describe Employee;"
+var query = "CREATE TABLE `test`.`user` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR NOT NULL , `password` VARCHAR NOT NULL , `matricule` VARCHAR NOT NULL , `address` VARCHAR NOT NULL , `cin` VARCHAR NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"
 connection.query(query, function(err,rows){
     if(err) 
 		throw err;
