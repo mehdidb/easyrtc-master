@@ -86,7 +86,8 @@ app.post('/register', function(req, res) {
 	var user  = req.body;
 	var mailInUse = 0;
 	user.available = 1;
-	var query = connection.query('SELECT count(*) FROM users WHERE email=?', user, function(err,res){
+	user.active = 0;
+	var query = connection.query('SELECT count(*) FROM users WHERE email=' + user.email, function(err,res){
 		if(err) 
 			throw err;
 		mailInUse = res;
