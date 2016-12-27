@@ -25,15 +25,15 @@ connection.connect(function(err){
 });
 
 var query = 
-"DROP TABLE IF EXISTS `user`;\
-CREATE TABLE `user` (\
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,\
-  `email` VARCHAR(50) NOT NULL,\
-  `password` VARCHAR(100) NOT NULL,\
-  `address` VARCHAR(100) NOT NULL,\
-  `cin` VARCHAR(8) NOT NULL,\
-  `matricule` VARCHAR(50) NOT NULL,\
-  PRIMARY KEY (`id`)\
+"DROP TABLE IF EXISTS user;\
+CREATE TABLE user (\
+  id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,\
+  email VARCHAR(50) NOT NULL,\
+  password VARCHAR(100) NOT NULL,\
+  address VARCHAR(100) NOT NULL,\
+  cin VARCHAR(8) NOT NULL,\
+  matricule VARCHAR(50) NOT NULL,\
+  PRIMARY KEY (id)\
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;"
 connection.query(query, function(err,rows){
     if(err) 
