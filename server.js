@@ -286,7 +286,9 @@ app.post('/addUser', function(req, res) {
 		if(err) {
 			console.log(err.message);
 		} else {
-			[join.user1_id, join.user2_id] = [join.user2_id, join.user1_id];
+			var a = join.user1_id;
+			join.user1_id = join.user2_id;
+			join.user2_id = a;
 			connection.query('INSERT INTO user_join SET ?', join, function(err,rows){
 				if(err) {
 					console.log(err.message);
