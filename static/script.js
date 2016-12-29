@@ -1,5 +1,7 @@
 var projetApp = angular.module('projetApp', ['ngRoute']).service('sharedProperties', function (){
     var user;
+	var compaign;
+	var userCalled;
 
     return {
         getUser: function () {
@@ -7,6 +9,18 @@ var projetApp = angular.module('projetApp', ['ngRoute']).service('sharedProperti
         },
         setUser: function(value) {
             user = value;
+        },
+		getUserCalled: function () {
+            return userCalled;
+        },
+        setUserCalled: function(value) {
+            userCalled = value;
+        },
+		getCompaign: function () {
+            return compaign;
+        },
+        setCompaign: function(value) {
+            compaign = value;
         }
     };
 });
@@ -14,7 +28,9 @@ var projetApp = angular.module('projetApp', ['ngRoute']).service('sharedProperti
 projetApp.factory('SharedService', function() {
   return {
     sharedObject: {
-		user: ''
+		user: '',
+		userCalled: '',
+		compaign: ''
     }
   };
 });
@@ -35,6 +51,34 @@ projetApp.config(function($routeProvider) {
 			templateUrl : 'pages/dashboard.html',
 			controller  : 'dashboardController'
 		})
+		
+		.when('/compaigns', {
+			templateUrl : 'pages/compaigns.html',
+			controller  : 'compaignsController'
+		})
+		
+		.when('/compaign', {
+			templateUrl : 'pages/compaign.html',
+			controller  : 'compaignController'
+		})
+		
+		.when('/search', {
+			templateUrl : 'pages/search.html',
+			controller  : 'searchController'
+		})
+		
+		.when('/call', {
+			templateUrl : 'pages/call.html',
+			controller  : 'callController'
+		})
+});
+
+projetApp.run(function($rootScope, $location, sharedProperties) {
+  $rootScope.$on('$routeChangeSuccess', function() {
+		if (typeof sharedProperties.getUser() == 'undefined') {
+			$location.url("/");
+		}
+  });
 });
 
 projetApp.controller('mainController', function($scope, $http, $location, sharedProperties) {
@@ -50,7 +94,8 @@ projetApp.controller('mainController', function($scope, $http, $location, shared
 			$scope.color = data.color;
 			if (data.status == 1) {
 				$location.path("/dashboard");
-				sharedProperties.setUser(user);
+				sharedProperties.setUser(data.user);
+				console.log(data.user);
 			}
         }).
 		error(function(data, status) {
@@ -102,8 +147,175 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 	}
 });
 
-projetApp.controller('dashboardController', function($scope, sharedProperties) {
+projetApp.controller('compaignsController', function($scope, $http, sharedProperties) {
 	$scope.user = sharedProperties.getUser();
 	$scope.message = 'Welcome to the dashboard';
+	$scope.choice = 0;
+	$scope.compaigns;
 	
+	$scope.changeChoice = function(choice) {
+		$scope.choice = choice;
+	}
+	
+	$scope.addCompaign = function(compaign) {
+		compaign.creator_id = $scope.user.id;
+		$http.post("/addCompaign", JSON.stringify(compaign), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {
+            $scope.status = data.message;
+			$scope.color = data.color;
+			if (data.status == 1) {
+				console.log(data);
+			}
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+	
+	$scope.showCompaigns = function() {
+		$scope.changeChoice(1);
+		
+		$http.get("/getCompaigns").
+        success(function(data, status) {
+            console.log('Compaigns fetched successfully.');
+			console.log(data);
+			$scope.compaigns = data;
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+	
+	$scope.joinCompaign = function(id) {
+		var obj = new Object();
+		obj.user_id = $scope.user.id;
+		obj.compaign_id = id;
+		obj.date = new Date();
+
+		$http.post("/joinCompaign", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {
+            $scope.status = data.message;
+			$scope.color = data.color;
+			if (data.status == 1) {
+				console.log(data);
+			}
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+});
+
+projetApp.controller('dashboardController', function($scope, $http, $location, sharedProperties) {
+	$scope.user = sharedProperties.getUser();
+	$scope.message = 'Welcome to the dashboard';
+	$scope.compaigns;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		$scope.showCompaigns();
+	});
+	
+	$scope.enterCompaign = function(compaign) {
+		sharedProperties.setCompaign(compaign);
+		$location.path("/compaign");
+	}
+	
+	$scope.showCompaigns = function() {
+		var obj = new Object();
+		obj.user_id = $scope.user.id;
+		
+		$http.post("/getCompaignsById", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {	
+			$scope.compaigns = data;
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+});
+
+projetApp.controller('searchController', function($scope, $http, sharedProperties) {
+	$scope.user = sharedProperties.getUser();
+	$scope.compaign = sharedProperties.getCompaign();
+	$scope.message = 'Welcome to the dashboard';
+	$scope.users;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		$scope.showContacts();
+	});
+	
+	$scope.addUser = function(user) {
+		var obj = new Object();
+		obj.user1_id = $scope.user.id;
+		obj.user2_id = user.user_id;
+		obj.compaign_id = $scope.compaign.id;
+		obj.room_id = CryptoJS.MD5(obj.user1_id + '-' + obj.user2_id + ':' + obj.compaign_id).toString();
+		obj.date = new Date();
+		
+		$http.post("/addUser", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {	
+			console.log(data);
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+	
+	$scope.showContacts = function() {
+		var obj = new Object();
+		obj.user_id = $scope.user.id;
+		obj.compaign_id = $scope.compaign.id;
+		
+		$http.post("/getUsers", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {	
+			$scope.users = data;
+			console.log(data);
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+});
+
+projetApp.controller('compaignController', function($scope, $http, $location, sharedProperties) {
+	$scope.user = sharedProperties.getUser();
+	$scope.compaign = sharedProperties.getCompaign();
+	$scope.message = 'Welcome to the dashboard';
+	$scope.users;
+	
+	$scope.$on('$viewContentLoaded', function() {
+		$scope.showContacts();
+	});
+	
+	$scope.showContacts = function() {
+		var obj = new Object();
+		obj.user_id = $scope.user.id;
+		obj.compaign_id = $scope.compaign.id;
+		
+		$http.post("/getUsersById", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {	
+			$scope.users = data;
+			console.log(data);
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+	
+	$scope.callUser = function(user) {
+		sharedProperties.setUserCalled(user);
+		$location.path("/call");
+		
+	}
+});
+
+projetApp.controller('callController', function($scope, $http, sharedProperties) {
+	$scope.user = sharedProperties.getUser();
+	$scope.compaign = sharedProperties.getCompaign();
+	$scope.userCalled = sharedProperties.getUserCalled();
+
+	$scope.$on('$viewContentLoaded', function() {
+		console.log($scope.userCalled.room_id)
+		connect($scope.userCalled.room_id, $scope.userCalled.email);
+	});
 });

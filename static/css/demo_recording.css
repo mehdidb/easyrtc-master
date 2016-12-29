@@ -1,0 +1,29 @@
+#demoContainer {
+    position:relative;
+}
+#connectControls {
+    float:left;
+    width:250px;
+    text-align:center;
+    border: 2px solid black;
+}
+#otherClients {
+}
+#selfVideo {
+    height:480px;
+    width:640px;
+    float:left;
+    border:1px solid gray;
+    margin-left:10px;
+}
+
+#callerVideo {
+    height:480px;
+    width:640px;
+    border:1px solid gray;
+    margin-left:10px;
+}
+
+#recordButtons {
+    clear:both;
+}

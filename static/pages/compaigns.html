@@ -1,0 +1,158 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand">Menu</a>
+	</div>
+	<!-- Top Menu Items -->
+	<ul class="nav navbar-right top-nav">
+		<li class="dropdown">
+			<a href="#/dashboard" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+			<ul class="dropdown-menu alert-dropdown">
+				<li>
+					<a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+				</li>
+				<li>
+					<a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
+				</li>
+				<li>
+					<a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
+				</li>
+				<li>
+					<a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
+				</li>
+				<li>
+					<a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
+				</li>
+				<li>
+					<a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="#">View All</a>
+				</li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#/dashboard" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>{{user.email}} <b class="caret"></b></a>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+		<ul class="nav navbar-nav side-nav">
+			<li>
+				<a href="#/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+			</li>
+			<li class="active">
+				<a href="#/compaigns"><i class="fa fa-fw fa-bar-chart-o"></i> Compaigns</a>
+			</li>
+			<li>
+				<a href="#/search"><i class="fa fa-fw fa-table"></i> Search</a>
+			</li>
+			<li>
+				<a href="#"><i class="fa fa-fw fa-desktop"></i> Old videos (Not available)</a>
+			</li>
+			<li>
+				<a href="#/settings"><i class="fa fa-fw fa-wrench"></i> Settings</a>
+			</li>
+			<li>
+				<a href="#/"><i class="fa fa-fw fa-edit"></i> Log out</a>
+			</li>
+	</ul></div>
+	<!-- /.navbar-collapse -->
+</nav>
+
+<div id="page-wrapper">	
+	<div class="container-fluid">
+		<!-- Page Heading -->
+		<!-- Page Heading -->
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">
+					Compaigns
+					<small>Compaigns management</small>
+				</h1>
+				<div ng-show="choice == 0">
+					<p>Please choose what your are planning to do :</p>
+					<form class="form-group">
+						<input type="radio" name="choice" class="btn btn-default" ng-click="showCompaigns()">List compaigns<br>
+						<span ng-show ="user.type == 1"><input type="radio" name="choice" class="btn btn-default" ng-click="changeChoice(2)">Create compaign<br></span>
+						<span ng-show ="user.type == 1"><input type="radio" name="choice" class="btn btn-default" ng-click="changeChoice(3)">Edit compaign<br></span>
+						<span ng-show ="user.type == 1"><input type="radio" name="choice" class="btn btn-default" ng-click="changeChoice(4)">Delete compaign<br></span>
+					</form>
+				</div>
+				<!-- List compaigns -->
+				<div ng-show="choice == 1">
+					<div ng-repeat="compaign in compaigns" class="panel panel-green">
+						<div class="panel-heading">
+							<h3 class="panel-title">{{ compaign.name }}</h3>
+						</div>
+						<div class="panel-body">
+							<label>Address</label><br>
+							<p>{{ compaign.name }}</p>
+							<label>Starting date</label><br>
+							<p ng-bind="compaign.start | date:'MM/dd/yyyy'"></p>
+							<label>Ending date</label><br>
+							<p ng-bind="compaign.end | date:'MM/dd/yyyy'"></p>
+							<label>Description</label><br>
+							<p>{{ compaign.description }}</p>
+							<button type="submit" ng-click="joinCompaign(compaign.id)" class="btn btn-default">Join compaign</button>
+							<button type="submit" ng-click="editCompaign(compaign)" ng-show="compaign.creator_id == user.id" class="btn btn-default">Edit compaign</button>
+							<button type="submit" ng-click="deleteCompaign(compaign)" ng-show="compaign.creator_id == user.id" class="btn btn-default">Delete compaign</button>
+						</div>
+					</div>
+				</div>
+				<!-- List compaigns -->
+				
+				<!-- Create compaign -->
+				<div ng-show="choice == 2">
+					<form novalidate="">
+						<label>Name:</label><br>
+						<input class="form-control" type="text" ng-model="compaign.name" placeholder="Name"><br>
+						<label>Address:</label><br>
+						<input class="form-control" type="text" ng-model="compaign.address" placeholder="Address"><br>
+						<label>Starting date:</label><br>
+						<input class="form-control" type="date" ng-model="compaign.start" placeholder="Starting date"><br>
+						<label>Ending date:</label><br>
+						<input class="form-control" type="date" ng-model="compaign.end" placeholder="Ending date"><br>
+						<label>Description:</label><br>
+						<textarea class="form-control" rows="3" ng-model="compaign.description" placeholder="Description"></textarea><br>
+						<button type="submit" ng-click="addCompaign(compaign)" class="btn btn-default">Add compaign</button>
+					</form>
+				</div>
+				<!-- Create compaign -->
+				
+				<!-- Edit compaign -->
+				<div ng-show="choice == 3">
+				
+				</div>
+				<!-- Edit compaign -->
+				
+				<!-- Delete compaign -->
+				<div ng-show="choice == 4">
+				
+				</div>
+				<!-- Delete compaign -->
+			</div>
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</div>

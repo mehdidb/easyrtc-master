@@ -86,25 +86,43 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">
-					Dashboard
-					<small>Infos</small>
+					Call
+					<small>Calling {{ userCalled.email }}</small>
 				</h1>
-				<p>Hello {{ user.email }} glad to see you again.</p><br>
-				<p>Here are the list of your joined compaigns and currently active :</p>
-				<div ng-repeat="compaign in compaigns" class="panel panel-green">
-					<div class="panel-heading">
-						<h3 class="panel-title">{{ compaign.name }}</h3>
-					</div>
-					<div class="panel-body">
-						<label>Address</label><br>
-						<p>{{ compaign.name }}</p>
-						<label>Starting date</label><br>
-						<p ng-bind="compaign.start | date:'MM/dd/yyyy'"></p>
-						<label>Ending date</label><br>
-						<p ng-bind="compaign.end | date:'MM/dd/yyyy'"></p>
-						<label>Description</label><br>
-						<p>{{ compaign.description }}</p>
-						<button type="submit" ng-click="enterCompaign(compaign)" class="btn btn-default">Enter compaign</button>
+				<h3>Room ID : {{ userCalled.room_id }} </h3>
+				<div>
+					<div id="demoContainer">
+						<div id="videos">
+							<video autoplay="autoplay" class="easyrtcMirror" id="selfVideo" muted="muted" volume="0" ></video>
+							<div style="position:relative;float:left;">
+							<video autoplay="autoplay" id="callerVideo"></video>
+							</div>
+							<!-- each caller video needs to be in it"s own div so it"s close button can be positioned correctly -->
+						</div>
+						<div ></div>
+						<div id="recordButtons" class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Call option</h3>
+							</div>
+							<div id="otherClients" class="panel-body"></div>
+						</div>
+						
+						<div id="recordButtons" class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Record this call</h3>
+							</div>
+							<div class="panel-body">
+								<input type="radio" onclick="easyrtc.setRecordingVideoCodec("vp8");" checked="checked" id="useVP8" name="codecUsed"> VP8 </input>
+								<input type="radio" onclick="easyrtc.setRecordingVideoCodec("vp9");" id="useVP9" name="codecUsed"> VP9 </input>
+								<input type="radio" onclick="easyrtc.setRecordingVideoCodec("h264");" id="useH264" name="codecUsed"> H264 </input>
+								<br>
+								<button id="startRecording" disabled="disabled" onclick="startRecording();" >Start recording</button> 
+								<button id="stopRecording" disabled="disabled" onclick="endRecording();" >End/finish recording</button> 
+								<br>
+								download links for videos: self:<a id="selfDownloadLink"></a>
+								&nbsp;&nbsp;caller:<a id="callerDownloadLink"></a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

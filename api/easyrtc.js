@@ -3504,12 +3504,6 @@ var Easyrtc = function() {
                 }
 
             } 
-            else if( cordova && cordova.plugins ) { 
-                //
-                // I haven't been able to make video constraints other than 640x480 work.
-                // So disabling this feature for ios-rtc.
-                constraints.video = true;
-            } 
             else { 
                 // chrome and opera
                 constraints.video = {};
@@ -4927,13 +4921,6 @@ var Easyrtc = function() {
             registerLocalMediaStreamByName(stream, streamName);
             var videoObj, triesLeft, tryToGetSize, ele;
             if (haveAudioVideo.video) {
-                if( cordova && cordova.plugins ) { // cordova doesn't have video width and height properties visible
-                    updateConfigurationInfo();
-                    if (successCallback) {
-                        successCallback(stream);
-                    }
-                    return;
-                }
                 videoObj = document.createElement('video');
                 videoObj.muted = true;
                 triesLeft = 30;

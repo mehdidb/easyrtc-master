@@ -87,24 +87,14 @@
 			<div class="col-lg-12">
 				<h1 class="page-header">
 					Dashboard
-					<small>Infos</small>
+					<small>Contacts list of {{ compaign.name }}</small>
 				</h1>
-				<p>Hello {{ user.email }} glad to see you again.</p><br>
-				<p>Here are the list of your joined compaigns and currently active :</p>
-				<div ng-repeat="compaign in compaigns" class="panel panel-green">
+				<div ng-repeat="user in users" class="panel panel-yellow">
 					<div class="panel-heading">
-						<h3 class="panel-title">{{ compaign.name }}</h3>
+						<h3 class="panel-title">{{ user.email }} (<span><img src="images/{{ user.available }}.png"/></span>)</h3>
 					</div>
 					<div class="panel-body">
-						<label>Address</label><br>
-						<p>{{ compaign.name }}</p>
-						<label>Starting date</label><br>
-						<p ng-bind="compaign.start | date:'MM/dd/yyyy'"></p>
-						<label>Ending date</label><br>
-						<p ng-bind="compaign.end | date:'MM/dd/yyyy'"></p>
-						<label>Description</label><br>
-						<p>{{ compaign.description }}</p>
-						<button type="submit" ng-click="enterCompaign(compaign)" class="btn btn-default">Enter compaign</button>
+						<button type="submit" ng-click="callUser(user)" class="btn btn-default">Call user</button>
 					</div>
 				</div>
 			</div>

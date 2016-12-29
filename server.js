@@ -137,23 +137,24 @@ app.post('/register', function(req, res) {
 
 app.post('/login', function(req, res) {
 	var user  = req.body;
-	var query = connection.query('SELECT active, COUNT(*) AS Colsum FROM users WHERE email=? and password=?', [user.email, user.password], function(err, rows){
+	var query = connection.query('SELECT *, COUNT(*) AS Colsum FROM users WHERE email=? and password=?', [user.email, user.password], function(err, rows){
 		if (err) {  
 			console.log(err.message);
 		} else {
-			console.log(rows);
 			var resp = new Object();
 			var found = rows[0].Colsum != 0;
-
+			delete rows[0].Colsum;
+			delete rows[0].password;
+			
 			if (found == true) {
 				if (rows[0].active == 0) {
-					var resp = new Object();
 					resp.status = 0;
 					resp.color = 'red';
 					resp.message = 'Your account is not active.';
 				} else {
 					resp.status = 1;
 					resp.color = 'green';
+					resp.user = rows[0];
 					resp.message = 'Welcome.';
 				}
 			} else {
@@ -162,8 +163,142 @@ app.post('/login', function(req, res) {
 				resp.color = 'red';
 				resp.message = 'Incorrect creditential.';
 			}
+			console.log(JSON.stringify(resp));
 			res.end(JSON.stringify(resp));
 		} 
 	});
 });
 
+app.get('/getCompaigns', function(req, res) {
+	var query = connection.query('SELECT * FROM compaigns', function(err, rows){
+		if (err) {  
+			console.log(err.message);
+		} else {
+			var resp = new Object();
+			resp = rows;	
+			console.log(JSON.stringify(resp));
+			res.end(JSON.stringify(resp));
+		} 
+	});
+});
+
+app.post('/getCompaignsById', function(req, res) {
+	var user_id  = req.body.user_id;
+	var q = "SELECT *\
+			 FROM compaigns\
+			 INNER JOIN user_compaign\
+			 ON compaigns.id=user_compaign.compaign_id\
+			 WHERE user_compaign.user_id = " + user_id + "\
+			 and compaigns.end > NOW();";
+	
+	var query = connection.query(q, function(err,rows){
+		if(err) 
+			console.log(err.message);
+		var resp = new Object();
+		resp = rows;
+		console.log(JSON.stringify(resp));
+		res.end(JSON.stringify(resp));
+	});
+});
+
+app.post('/addCompaign', function(req, res) {
+	var compaign  = req.body;
+	var query = connection.query('INSERT INTO compaigns SET ?', compaign, function(err,rows){
+		if(err) 
+			console.log(err.message);
+		var resp = new Object();
+		resp.status = 1;
+		resp.message = 'Added successfully';
+		console.log(JSON.stringify(resp));
+		res.end(JSON.stringify(resp));
+	});
+});
+
+app.post('/joinCompaign', function(req, res) {
+	var join  = req.body;
+	var query = connection.query('INSERT INTO user_compaign SET ?', join, function(err,rows){
+		if(err) 
+			console.log(err.message);
+		var resp = new Object();
+		resp.status = 1;
+		resp.message = 'User join successfully';
+		console.log(JSON.stringify(resp));
+		res.end(JSON.stringify(resp));
+	});
+});
+
+app.post('/getUsers', function(req, res) {
+	var user_id = req.body.user_id;
+	var compaign_id  = req.body.compaign_id;
+	var q = "SELECT *\
+			 FROM users\
+			 INNER JOIN user_compaign\
+			 ON users.id=user_compaign.user_id\
+			 WHERE compaign_id = " + compaign_id + ";";
+	
+	var query = connection.query(q, function(err, rows){
+		if (err) {  
+			console.log(err.message);
+		} else {
+			var resp = new Object();
+			resp = rows;
+			for (i in resp) {
+				if (resp[i].id == user_id) {
+					resp.splice(i, 1);
+				}
+			}
+			res.end(JSON.stringify(resp));
+		} 
+	});
+});
+
+app.post('/getUsersById', function(req, res) {
+	var user_id = req.body.user_id;
+	var compaign_id  = req.body.compaign_id;
+	var q = "SELECT *, user_join.room_id\
+			 FROM users\
+			 INNER JOIN user_join\
+			 ON users.id=user_join.user1_id\
+			 WHERE user_join.compaign_id = " + compaign_id + ";";
+	
+	var resp = new Object();
+	var query = connection.query(q, function(err,rows){
+		if(err) {
+			resp.status = 0;
+			resp.message = err.message;
+			console.log(err.message);
+		} else {
+			resp = rows;
+			for (i in resp) {
+				if (resp[i].id == user_id) {
+					resp.splice(i, 1);
+				}
+			}
+			console.log(JSON.stringify(resp));
+		}
+		res.end(JSON.stringify(resp));
+	});
+});
+
+app.post('/addUser', function(req, res) {
+	var join  = req.body;	
+	var query = connection.query('INSERT INTO user_join SET ?', join, function(err,rows){
+		if(err) {
+			console.log(err.message);
+		} else {
+			[join.user1_id, join.user2_id] = [join.user2_id, join.user1_id];
+			connection.query('INSERT INTO user_join SET ?', join, function(err,rows){
+				if(err) {
+					console.log(err.message);
+				} else {
+					console.log(JSON.stringify(join));
+					var resp = new Object();
+					resp.status = 1;
+					resp.message = 'User added successfully';
+					console.log(JSON.stringify(resp));
+					res.end(JSON.stringify(resp));
+				}
+			});
+		}
+	});
+});
