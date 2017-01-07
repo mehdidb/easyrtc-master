@@ -87,7 +87,7 @@ setInterval(
 				console.log(err.message);
 			}
 		});
-		console.log('Updated status available (1).');
+		console.log('Updated status available(1).');
 	}, 50*1000);
 
 setInterval(
@@ -97,7 +97,7 @@ setInterval(
 				console.log(err.message);
 			}
 		});
-		console.log('Updated status available (2).');
+		console.log('Updated status available(2).');
 	}, 50*1000);
 	
 app.post('/register', function(req, res) {
