@@ -82,15 +82,10 @@ webServer.listen(server_port, server_ip_address, function () {
 // Refresh available status of users
 setTimeout(
 	function(){
-		var query = connection.query("UPDATE users SET available='0' WHERE lastConnection=1;", function(err, rows){
+		var query = connection.query("UPDATE users SET available='0' WHERE DATE_ADD(lastConnection,INTERVAL 5 MINUTE)<NOW();", function(err, rows){
 			if (err) {  
 				console.log(err.message);
-			} else {
-				var resp = new Object();
-				resp = rows;	
-				console.log(JSON.stringify(resp));
-				res.end(JSON.stringify(resp));
-			} 
+			}
 		});
 		console.log('Updated status.');
 	}, 5*1000);
