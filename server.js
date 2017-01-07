@@ -79,6 +79,22 @@ webServer.listen(server_port, server_ip_address, function () {
     console.log('listening on ' + server_ip_address + ':' + server_port);
 });
 
+// Refresh available status of users
+setTimeout(
+	function(){
+		var query = connection.query("UPDATE users SET available='0' WHERE lastConnection=1;", function(err, rows){
+			if (err) {  
+				console.log(err.message);
+			} else {
+				var resp = new Object();
+				resp = rows;	
+				console.log(JSON.stringify(resp));
+				res.end(JSON.stringify(resp));
+			} 
+		});
+		console.log('Updated status.');
+	}, 5*1000);
+
 app.post('/register', function(req, res) {
 	var user  = req.body;
 	user.available = 1;
@@ -156,6 +172,18 @@ app.post('/login', function(req, res) {
 					resp.color = 'green';
 					resp.user = rows[0];
 					resp.message = 'Welcome.';
+					
+					// Update lastConnection
+					connection.query("UPDATE users SET lastConnection=NOW() WHERE id=" rows[0].id + ";", function(err, rows){
+						if (err) {  
+							console.log(err.message);
+						} else {
+							var resp = new Object();
+							resp = rows;	
+							console.log(JSON.stringify(resp));
+							res.end(JSON.stringify(resp));
+						}
+					}						
 				}
 			} else {
 				var resp = new Object();
@@ -270,6 +298,7 @@ app.post('/getUsersById', function(req, res) {
 		} else {
 			resp = rows;
 			for (i in resp) {
+				delete resp[i].password;
 				if (resp[i].id == user_id) {
 					resp.splice(i, 1);
 				}
