@@ -174,7 +174,7 @@ app.post('/login', function(req, res) {
 					resp.message = 'Welcome.';
 					
 					// Update lastConnection
-					connection.query("UPDATE users SET lastConnection=NOW() WHERE id=" rows[0].id + ";", function(err, rows){
+					connection.query("UPDATE users SET lastConnection=NOW() WHERE id="  + rows[0].id + ";", function(err, rows){
 						if (err) {  
 							console.log(err.message);
 						} else {
