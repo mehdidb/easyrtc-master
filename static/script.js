@@ -74,8 +74,8 @@ projetApp.config(function($routeProvider) {
 });
 
 projetApp.run(function($rootScope, $location, sharedProperties) {
-  $rootScope.$on('$routeChangeSuccess', function() {
-		if (typeof sharedProperties.getUser() == 'undefined') {
+  $rootScope.$on('$routeChangeSuccess', function(event, next, current) {
+		if (typeof sharedProperties.getUser() == 'undefined' && $location.path() != '/signup') {
 			$location.url("/");
 		}
   });
@@ -106,7 +106,11 @@ projetApp.controller('mainController', function($scope, $http, $location, shared
 });
 
 projetApp.controller('signupController', function($scope, $http, $location, sharedProperties) {
-	$scope.user = {"type":0};
+	$scope.user = 
+	{
+		"type":0
+	};
+	
 	$scope.changeType = function(type) {
 		$scope.user.type = type;
 	}
@@ -212,7 +216,9 @@ projetApp.controller('dashboardController', function($scope, $http, $location, s
 	$scope.compaigns;
 	
 	$scope.$on('$viewContentLoaded', function() {
-		$scope.showCompaigns();
+		if (typeof sharedProperties.getUser() != 'undefined') {
+			$scope.showCompaigns();
+		}
 	});
 	
 	$scope.enterCompaign = function(compaign) {
@@ -241,7 +247,9 @@ projetApp.controller('searchController', function($scope, $http, sharedPropertie
 	$scope.users;
 	
 	$scope.$on('$viewContentLoaded', function() {
-		$scope.showContacts();
+		if (typeof sharedProperties.getUser() != 'undefined') {
+			$scope.showContacts();
+		}
 	});
 	
 	$scope.addUser = function(user) {
@@ -278,13 +286,14 @@ projetApp.controller('searchController', function($scope, $http, sharedPropertie
 });
 
 projetApp.controller('compaignController', function($scope, $http, $location, sharedProperties) {
+	$scope.users;
 	$scope.user = sharedProperties.getUser();
 	$scope.compaign = sharedProperties.getCompaign();
-	$scope.message = 'Welcome to the dashboard';
-	$scope.users;
 	
 	$scope.$on('$viewContentLoaded', function() {
-		$scope.showContacts();
+		if (typeof sharedProperties.getUser() != 'undefined') {
+			$scope.showContacts();
+		}
 	});
 	
 	$scope.showContacts = function() {
@@ -315,7 +324,7 @@ projetApp.controller('callController', function($scope, $http, sharedProperties)
 	$scope.userCalled = sharedProperties.getUserCalled();
 
 	$scope.$on('$viewContentLoaded', function() {
-		console.log($scope.userCalled.room_id)
+		console.log($scope.userCalled.room_id);
 		connect($scope.userCalled.room_id, $scope.userCalled.email);
 	});
 });
