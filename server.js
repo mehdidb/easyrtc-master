@@ -183,7 +183,7 @@ app.post('/login', function(req, res) {
 							console.log(JSON.stringify(resp));
 							res.end(JSON.stringify(resp));
 						}
-					}						
+					});						
 				}
 			} else {
 				var resp = new Object();
