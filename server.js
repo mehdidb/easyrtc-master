@@ -80,7 +80,7 @@ webServer.listen(server_port, server_ip_address, function () {
 });
 
 // Refresh available status of users
-setTimeout(
+setInterval(
 	function(){
 		var query = connection.query("UPDATE users SET available='0' WHERE DATE_ADD(lastConnection,INTERVAL 5 MINUTE)<NOW();", function(err, rows){
 			if (err) {  
