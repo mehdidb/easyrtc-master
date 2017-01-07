@@ -87,9 +87,19 @@ setInterval(
 				console.log(err.message);
 			}
 		});
-		console.log('Updated status.');
-	}, 5*1000);
+		console.log('Updated status available (1).');
+	}, 50*1000);
 
+setInterval(
+	function(){
+		var query = connection.query("UPDATE users SET available='1' WHERE DATE_ADD(lastConnection,INTERVAL 5 MINUTE)>NOW();", function(err, rows){
+			if (err) {  
+				console.log(err.message);
+			}
+		});
+		console.log('Updated status available (2).');
+	}, 50*1000);
+	
 app.post('/register', function(req, res) {
 	var user  = req.body;
 	user.available = 1;
