@@ -63,6 +63,9 @@
 					Search
 					<small>Search contacts of {{ compaign.name }}</small>
 				</h1>
+				<div class="alert alert-info">
+					<p>{{ message }}</p>
+				</div>
 				<div ng-repeat="user in users" class="panel panel-yellow">
 					<div class="panel-heading">
 						<h3 class="panel-title">{{ user.email }}</h3>

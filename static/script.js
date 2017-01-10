@@ -106,6 +106,7 @@ projetApp.controller('mainController', function($scope, $http, $location, shared
 });
 
 projetApp.controller('signupController', function($scope, $http, $location, sharedProperties) {
+	$scope.message= '';
 	$scope.user = 
 	{
 		"type":0
@@ -119,7 +120,7 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 		if (typeof user.email === 'undefined' || typeof user.password === 'undefined' ||
 			typeof user.cPassword === 'undefined' || typeof user.address === 'undefined' ||
 			typeof user.cin === 'undefined' || (user.type == 2 && typeof user.matricule === 'undefined') ) {
-			
+			$scope.message = 'Error : Missing fields';
 			console.log('Error : Missing fields');
 			return 'Error : Missing fields';
 		}
@@ -127,11 +128,13 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 		if ( user.email.length == 0 || user.password.length == 0 ||
 			user.cPassword.length == 0 || user.address.length == 0 ||
 			user.cin.length != 8 || (user.type == 2 && user.matricule.length == 0) ) {
+			$scope.message = 'Error : Please check all your fields';
 			console.log('Error : Please check all your fields');
 			return 'Error : Please check all your fields';
 		}
 		
 		if (user.cPassword != user.password) {
+			$scope.message = 'Error : Please check your passwords';
 			console.log('Error : Please check your passwords');
 			return 'Error : Please check your passwords';
 		}
@@ -141,11 +144,13 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 		console.log(JSON.stringify(user));
 		$http.post("/register", JSON.stringify(user), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
-            console.log('User added successfully.');
+            $scope.message = 'User added successfully.';
+			console.log('User added successfully.');
 			$location.path("/");
         }).
 		error(function(data, status) {
-            console.log('unknown error');
+            $scope.message = 'unknown error';
+			console.log('unknown error');
         });
 		delete user.password;
 	}
@@ -243,7 +248,7 @@ projetApp.controller('dashboardController', function($scope, $http, $location, s
 projetApp.controller('searchController', function($scope, $http, sharedProperties) {
 	$scope.user = sharedProperties.getUser();
 	$scope.compaign = sharedProperties.getCompaign();
-	$scope.message = 'Welcome to the dashboard';
+	$scope.message = 'Here you can select user to add.';
 	$scope.users;
 	
 	$scope.$on('$viewContentLoaded', function() {
@@ -263,9 +268,11 @@ projetApp.controller('searchController', function($scope, $http, sharedPropertie
 		$http.post("/addUser", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {	
 			console.log(data);
+			$scope.message = data.message;
         }).
 		error(function(data, status) {
             console.log('unknown error');
+			$scope.message = 'Unknown error.';
         });
 	}
 	
