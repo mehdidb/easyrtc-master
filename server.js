@@ -197,6 +197,7 @@ app.post('/setOnline', function(req, res) {
 
 app.post('/addCompaign', function(req, res) {
 	var compaign  = req.body;
+	compaign.active = 1;
 	var query = connection.query('INSERT INTO compaigns SET ?', compaign, function(err,rows){
 		if(err) 
 			console.log(err.message);
@@ -220,7 +221,7 @@ app.post('/joinCompaign', function(req, res) {
 });
 
 app.get('/getCompaigns', function(req, res) {
-	var query = connection.query('SELECT * FROM compaigns', function(err, rows){
+	var query = connection.query('SELECT * FROM compaigns WHERE active=1', function(err, rows){
 		if (err) {  
 			console.log(err.message);
 		} else {
@@ -237,8 +238,9 @@ app.post('/getCompaignsById', function(req, res) {
 			 FROM compaigns\
 			 INNER JOIN user_compaign\
 			 ON compaigns.id=user_compaign.compaign_id\
-			 WHERE user_compaign.user_id = " + user_id + "\
-			 and compaigns.end > NOW();";
+			 WHERE active=1\
+			 AND user_compaign.user_id = " + user_id + "\
+			 AND compaigns.end > NOW();";
 	
 	var query = connection.query(q, function(err,rows){
 		if(err) 
@@ -263,7 +265,7 @@ app.post('/editCompaign', function(req, res) {
 
 app.post('/deleteCompaign', function(req, res) {
 	var compaign  = req.body;
-	var query = connection.query('DELETE FROM compaigns WHERE id=?', compaign.id, function(err,rows){
+	var query = connection.query('UPDATE compaigns SET active=0 WHERE id=?', compaign.id, function(err,rows){
 		if(err) 
 			console.log(err.message);
 		var resp = new Object();
