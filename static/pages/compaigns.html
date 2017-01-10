@@ -115,13 +115,40 @@
 				
 				<!-- Edit compaign -->
 				<div ng-show="choice == 3">
-				
+					<form novalidate="">
+						<label>Name:</label><br>
+						<input class="form-control" type="text" ng-model="compaign.name" placeholder="Name" value="{{ compaign.name }}"><br>
+						<label>Address:</label><br>
+						<input class="form-control" type="text" ng-model="compaign.address" placeholder="Address" value="{{ compaign.address }}"><br>
+						<label>Starting date:</label><br>
+						<input class="form-control" type="date" ng-model="compaign.start" placeholder="Starting date" value="{{ compaign.start }}"><br>
+						<label>Ending date:</label><br>
+						<input class="form-control" type="date" ng-model="compaign.end" placeholder="Ending date" value="{{ compaign.end }}"><br>
+						<label>Description:</label><br>
+						<textarea class="form-control" rows="3" ng-model="compaign.description" placeholder="Description" value="{{ compaign.description }}"></textarea><br>
+						<button type="submit" ng-click="LunchEditCompaign(compaign)" ng-show="compaign.creator_id == user.id" class="btn btn-default">Edit compaign</button>
+					</form>
 				</div>
 				<!-- Edit compaign -->
 				
 				<!-- Delete compaign -->
 				<div ng-show="choice == 4">
-				
+					<div ng-repeat="compaign in compaigns" class="panel panel-green">
+						<div class="panel-heading">
+							<h3 class="panel-title">{{ compaign.name }}</h3>
+						</div>
+						<div class="panel-body">
+							<label>Address</label><br>
+							<p>{{ compaign.name }}</p>
+							<label>Starting date</label><br>
+							<p ng-bind="compaign.start | date:'MM/dd/yyyy'"></p>
+							<label>Ending date</label><br>
+							<p ng-bind="compaign.end | date:'MM/dd/yyyy'"></p>
+							<label>Description</label><br>
+							<p>{{ compaign.description }}</p>
+							<button type="submit" ng-click="deleteCompaign(compaign)" ng-show="compaign.creator_id == user.id" class="btn btn-default">Delete compaign</button>
+						</div>
+					</div>
 				</div>
 				<!-- Delete compaign -->
 			</div>

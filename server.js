@@ -249,6 +249,30 @@ app.post('/getCompaignsById', function(req, res) {
 	});
 });
 
+app.post('/editCompaign', function(req, res) {
+	var compaign  = req.body;
+	var query = connection.query('UPDATE compaigns SET ? WHERE id=?', [compaign, compaign.id], function(err,rows){
+		if(err) 
+			console.log(err.message);
+		var resp = new Object();
+		resp.status = 1;
+		resp.message = 'Modification successful.';
+		res.end(JSON.stringify(resp));
+	});
+});
+
+app.post('/deleteCompaign', function(req, res) {
+	var compaign  = req.body;
+	var query = connection.query('DELETE FROM compaigns WHERE id=?', compaign.id, function(err,rows){
+		if(err) 
+			console.log(err.message);
+		var resp = new Object();
+		resp.status = 1;
+		resp.message = 'Delete successfully';
+		res.end(JSON.stringify(resp));
+	});
+});
+
 app.post('/getUsers', function(req, res) {
 	var user_id = req.body.user_id;
 	var compaign_id  = req.body.compaign_id;

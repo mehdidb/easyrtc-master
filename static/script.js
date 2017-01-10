@@ -181,6 +181,41 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
         });
 	}
 	
+	$scope.editCompaign = function(compaign) {
+		$scope.changeChoice(3);
+	}
+	
+	$scope.LunchEditCompaign = function(compaign) {
+		compaign.creator_id = $scope.user.id;
+		$http.post("/editCompaign", JSON.stringify(compaign), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {
+            $scope.status = data.message;
+			$scope.color = data.color;
+			if (data.status == 1) {
+				console.log(data);
+			}
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+	
+	$scope.deleteCompaign = function(compaign) {
+		$scope.changeChoice(0);
+		compaign.creator_id = $scope.user.id;
+		$http.post("/deleteCompaign", JSON.stringify(compaign), {'Content-Type': 'application/json;charset=utf-8;'}).
+        success(function(data, status) {
+            $scope.status = data.message;
+			$scope.color = data.color;
+			if (data.status == 1) {
+				console.log(data);
+			}
+        }).
+		error(function(data, status) {
+            console.log('unknown error');
+        });
+	}
+	
 	$scope.showCompaigns = function() {
 		$scope.changeChoice(1);
 		
