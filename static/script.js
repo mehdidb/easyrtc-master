@@ -156,7 +156,7 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 	}
 });
 
-projetApp.controller('compaignsController', function($scope, $http, sharedProperties) {
+projetApp.controller('compaignsController', function($scope, $http, sharedProperties, $filter) {
 	$scope.user = sharedProperties.getUser();
 	$scope.message = 'Welcome to the dashboard';
 	$scope.choice = 0;
@@ -182,6 +182,8 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 	}
 	
 	$scope.editCompaign = function(compaign) {
+		compaign.start = $filter("date")(compaign.start, 'yyyy-MM-dd');
+		compaign.end = $filter("date")(compaign.end, 'yyyy-MM-dd');
 		$scope.compaign = compaign;
 		$scope.changeChoice(3);
 	}
@@ -203,7 +205,6 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 	
 	$scope.deleteCompaign = function(compaign) {
 		$scope.changeChoice(0);
-		compaign.creator_id = $scope.user.id;
 		$http.post("/deleteCompaign", JSON.stringify(compaign), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
             $scope.status = data.message;
