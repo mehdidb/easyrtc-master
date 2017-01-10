@@ -158,7 +158,7 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 
 projetApp.controller('compaignsController', function($scope, $http, sharedProperties, $filter) {
 	$scope.user = sharedProperties.getUser();
-	$scope.message = 'Welcome to the dashboard';
+	$scope.message = 'Compaign management';
 	$scope.choice = 0;
 	$scope.compaigns;
 	
@@ -195,27 +195,28 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
             $scope.status = data.message;
 			$scope.color = data.color;
 			if (data.status == 1) {
-				console.log(data);
+				$scope.message = data.message;
 			}
         }).
 		error(function(data, status) {
             console.log('unknown error');
         });
+		$scope.changeChoice(0);
 	}
 	
 	$scope.deleteCompaign = function(compaign) {
-		$scope.changeChoice(0);
 		$http.post("/deleteCompaign", JSON.stringify(compaign), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
             $scope.status = data.message;
 			$scope.color = data.color;
 			if (data.status == 1) {
-				console.log(data);
+				$scope.message = data.message;
 			}
         }).
 		error(function(data, status) {
             console.log('unknown error');
         });
+		$scope.changeChoice(0);
 	}
 	
 	$scope.showCompaigns = function() {
@@ -224,7 +225,6 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 		$http.get("/getCompaigns").
         success(function(data, status) {
             console.log('Compaigns fetched successfully.');
-			console.log(data);
 			$scope.compaigns = data;
         }).
 		error(function(data, status) {
