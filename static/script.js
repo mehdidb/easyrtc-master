@@ -173,12 +173,13 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
             $scope.status = data.message;
 			$scope.color = data.color;
 			if (data.status == 1) {
-				console.log(data);
+				$scope.message = data.message;
 			}
         }).
 		error(function(data, status) {
             console.log('unknown error');
         });
+		$scope.changeChoice(0);
 	}
 	
 	$scope.editCompaign = function(compaign) {
