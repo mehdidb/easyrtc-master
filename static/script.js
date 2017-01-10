@@ -254,6 +254,7 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 			$scope.color = data.color;
 			if (data.status == 1) {
 				$scope.message = data.message;
+				console.log('Joined.');
 			}
         }).
 		error(function(data, status) {

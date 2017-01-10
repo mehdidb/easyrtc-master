@@ -213,6 +213,7 @@ app.post('/joinCompaign', function(req, res) {
 	var query = connection.query('INSERT INTO user_compaign SET ?', join, function(err,rows){
 		if(err) 
 			console.log(err.message);
+		console.log('User joinded compaign.');
 		var resp = new Object();
 		resp.status = 1;
 		resp.message = 'User join successfully';
