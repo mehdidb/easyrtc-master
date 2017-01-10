@@ -116,6 +116,10 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 		$scope.user.type = type;
 	}
 	
+	$scope.logOut = function() {
+		sharedProperties.setUser(null);
+	}
+	
 	$scope.registerUser = function(user) {
 		if (typeof user.email === 'undefined' || typeof user.password === 'undefined' ||
 			typeof user.cPassword === 'undefined' || typeof user.address === 'undefined' ||
@@ -161,6 +165,10 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 	$scope.message = 'Compaign management';
 	$scope.choice = 0;
 	$scope.compaigns;
+	
+	$scope.logOut = function() {
+		sharedProperties.setUser(null);
+	}
 	
 	$scope.changeChoice = function(choice) {
 		$scope.choice = choice;
@@ -259,6 +267,10 @@ projetApp.controller('dashboardController', function($scope, $http, $location, s
 	$scope.message = 'Welcome to the dashboard';
 	$scope.compaigns;
 	
+	$scope.logOut = function() {
+		sharedProperties.setUser(null);
+	}
+	
 	$scope.$on('$viewContentLoaded', function() {
 		if (typeof sharedProperties.getUser() != 'undefined') {
 			$scope.showCompaigns();
@@ -289,6 +301,10 @@ projetApp.controller('searchController', function($scope, $http, sharedPropertie
 	$scope.compaign = sharedProperties.getCompaign();
 	$scope.message = 'Here you can select user to add.';
 	$scope.users;
+	
+	$scope.logOut = function() {
+		sharedProperties.setUser(null);
+	}
 	
 	$scope.$on('$viewContentLoaded', function() {
 		if (typeof sharedProperties.getUser() != 'undefined') {
@@ -336,6 +352,10 @@ projetApp.controller('compaignController', function($scope, $http, $location, sh
 	$scope.user = sharedProperties.getUser();
 	$scope.compaign = sharedProperties.getCompaign();
 	
+	$scope.logOut = function() {
+		sharedProperties.setUser(null);
+	}
+	
 	$scope.$on('$viewContentLoaded', function() {
 		if (typeof sharedProperties.getUser() != 'undefined') {
 			$scope.showContacts();
@@ -369,6 +389,10 @@ projetApp.controller('callController', function($scope, $http, sharedProperties)
 	$scope.compaign = sharedProperties.getCompaign();
 	$scope.userCalled = sharedProperties.getUserCalled();
 
+	$scope.logOut = function() {
+		sharedProperties.setUser(null);
+	}
+	
 	$scope.$on('$viewContentLoaded', function() {
 		console.log($scope.userCalled.room_id);
 		connect($scope.userCalled.room_id, $scope.userCalled.email);
