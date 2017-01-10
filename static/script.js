@@ -167,6 +167,7 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 	}
 	
 	$scope.addCompaign = function(compaign) {
+		delete $scope.compaign;
 		compaign.creator_id = $scope.user.id;
 		$http.post("/addCompaign", JSON.stringify(compaign), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {
