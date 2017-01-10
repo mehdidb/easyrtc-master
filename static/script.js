@@ -182,6 +182,7 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 	}
 	
 	$scope.editCompaign = function(compaign) {
+		$scope.compaign = compaign;
 		$scope.changeChoice(3);
 	}
 	
