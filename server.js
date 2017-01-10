@@ -253,6 +253,7 @@ app.post('/getCompaignsById', function(req, res) {
 
 app.post('/editCompaign', function(req, res) {
 	var compaign  = req.body;
+	delete compaign.$$hashKey;
 	var query = connection.query('UPDATE compaigns SET ? WHERE id=?', [compaign, compaign.id], function(err,rows){
 		if(err) 
 			console.log(err.message);
