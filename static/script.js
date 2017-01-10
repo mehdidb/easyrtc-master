@@ -117,6 +117,7 @@ projetApp.controller('signupController', function($scope, $http, $location, shar
 	}
 	
 	$scope.logOut = function() {
+		$http.post("/logOut", JSON.stringify(sharedProperties.getUser()), {'Content-Type': 'application/json;charset=utf-8;'});
 		sharedProperties.setUser(null);
 	}
 	
@@ -167,6 +168,7 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
 	$scope.compaigns;
 	
 	$scope.logOut = function() {
+		$http.post("/logOut", JSON.stringify(sharedProperties.getUser()), {'Content-Type': 'application/json;charset=utf-8;'});
 		sharedProperties.setUser(null);
 	}
 	
@@ -269,6 +271,7 @@ projetApp.controller('dashboardController', function($scope, $http, $location, s
 	$scope.compaigns;
 	
 	$scope.logOut = function() {
+		$http.post("/logOut", JSON.stringify(sharedProperties.getUser()), {'Content-Type': 'application/json;charset=utf-8;'});
 		sharedProperties.setUser(null);
 	}
 	
@@ -305,6 +308,7 @@ projetApp.controller('searchController', function($scope, $http, sharedPropertie
 	$scope.users;
 	
 	$scope.logOut = function() {
+		$http.post("/logOut", JSON.stringify(sharedProperties.getUser()), {'Content-Type': 'application/json;charset=utf-8;'});
 		sharedProperties.setUser(null);
 	}
 	
@@ -355,6 +359,7 @@ projetApp.controller('compaignController', function($scope, $http, $location, sh
 	$scope.compaign = sharedProperties.getCompaign();
 	
 	$scope.logOut = function() {
+		$http.post("/logOut", JSON.stringify(sharedProperties.getUser()), {'Content-Type': 'application/json;charset=utf-8;'});
 		sharedProperties.setUser(null);
 	}
 	
@@ -392,6 +397,7 @@ projetApp.controller('callController', function($scope, $http, sharedProperties)
 	$scope.userCalled = sharedProperties.getUserCalled();
 
 	$scope.logOut = function() {
+		$http.post("/logOut", JSON.stringify(sharedProperties.getUser()), {'Content-Type': 'application/json;charset=utf-8;'});
 		sharedProperties.setUser(null);
 	}
 	

@@ -195,6 +195,16 @@ app.post('/setOnline', function(req, res) {
 	});
 });
 
+app.post('/logOut', function(req, res) {
+	var user  = req.body;
+	// Update lastConnection
+	connection.query("UPDATE users SET available=0 WHERE id="  + user.id + ";", function(err, rows){
+		if (err) {  
+			console.log(err.message);
+		}
+	});
+});
+
 app.post('/addCompaign', function(req, res) {
 	var compaign  = req.body;
 	compaign.active = 1;
@@ -239,7 +249,7 @@ app.post('/getCompaignsById', function(req, res) {
 			 FROM compaigns\
 			 INNER JOIN user_compaign\
 			 ON compaigns.id=user_compaign.compaign_id\
-			 WHERE compaigns.active=1\
+			 WHERE compaigns.active = 1\
 			 AND user_compaign.user_id = " + user_id + "\
 			 AND compaigns.end > NOW();";
 	
