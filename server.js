@@ -238,7 +238,7 @@ app.post('/getCompaignsById', function(req, res) {
 			 FROM compaigns\
 			 INNER JOIN user_compaign\
 			 ON compaigns.id=user_compaign.compaign_id\
-			 WHERE active=1\
+			 WHERE compaigns.active=1\
 			 AND user_compaign.user_id = " + user_id + "\
 			 AND compaigns.end > NOW();";
 	
