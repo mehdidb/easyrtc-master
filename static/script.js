@@ -253,7 +253,7 @@ projetApp.controller('compaignsController', function($scope, $http, sharedProper
             $scope.status = data.message;
 			$scope.color = data.color;
 			if (data.status == 1) {
-				console.log(data);
+				$scope.message = data.message;
 			}
         }).
 		error(function(data, status) {
@@ -289,6 +289,7 @@ projetApp.controller('dashboardController', function($scope, $http, $location, s
 		$http.post("/getCompaignsById", JSON.stringify(obj), {'Content-Type': 'application/json;charset=utf-8;'}).
         success(function(data, status) {	
 			$scope.compaigns = data;
+			console.log(data);
         }).
 		error(function(data, status) {
             console.log('unknown error');
