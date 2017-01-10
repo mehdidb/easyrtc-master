@@ -75,7 +75,7 @@ projetApp.config(function($routeProvider) {
 
 projetApp.run(function($rootScope, $location, sharedProperties) {
   $rootScope.$on('$routeChangeSuccess', function(event, next, current) {
-		if (typeof sharedProperties.getUser() == 'undefined' && $location.path() != '/signup') {
+		if ( (typeof sharedProperties.getUser() == 'undefined' || sharedProperties.getUser() == null) && $location.path() != '/signup') {
 			$location.url("/");
 		}
   });
